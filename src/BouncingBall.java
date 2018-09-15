@@ -28,7 +28,6 @@ public class BouncingBall extends JFrame implements MouseListener {
     static int t[] = new int[4];
     static int b = 1;
     static int yCord1 = 0;
-    static int y1 = 0;
     static Image im1 = null;
     static int angryX;
     static  int angryY;
@@ -43,8 +42,7 @@ public class BouncingBall extends JFrame implements MouseListener {
         for (int i = 0; i < 4; i++) {
             t[i] = 0;
         }
-        //for(int a=0;a<4;a++)
-         // hiddenballoon=false;
+
         hiddenballoon[0]=false;
         hiddenballoon[1]=false;
         hiddenballoon[2]=false;
@@ -54,7 +52,6 @@ public class BouncingBall extends JFrame implements MouseListener {
 
         panel.setPreferredSize(new Dimension(800, 800));
         frame.setVisible(true);
-        /* JButton b = new JButton("riya"); */
         frame.setFocusable(true);
         frame.add(panel);
 
@@ -62,7 +59,6 @@ public class BouncingBall extends JFrame implements MouseListener {
 
         frame.addMouseListener(ball);
         frame.pack();
-        // frame.add(b);
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         try {
@@ -78,15 +74,17 @@ public class BouncingBall extends JFrame implements MouseListener {
         Image background = null;
         Image angry=null;
         Image blue=null;
+        Image green=null;
 
         graphics.setColor(Color.blue);
 
-          background = ImageIO.read(BouncingBall.class.getClassLoader().getResource("images/a2.jpg"));
+             background = ImageIO.read(BouncingBall.class.getClassLoader().getResource("images/level2.jpg"));
         im1 = ImageIO.read(BouncingBall.class.getClassLoader().getResource("images/balloon1cs.png"));
         imgP = ImageIO.read(BouncingBall.class.getClassLoader().getResource("images/para.png"));
         imgB = ImageIO.read(BouncingBall.class.getClassLoader().getResource("images/bomb.png"));
         angry= ImageIO.read(BouncingBall.class.getClassLoader().getResource("images/angrybird.png"));
         blue = ImageIO.read(BouncingBall.class.getClassLoader().getResource("images/blue .png"));
+        green = ImageIO.read(BouncingBall.class.getClassLoader().getResource("images/green.png"));
                 //catch (IOException e) {
         //e.printStackTrace();
 
@@ -98,13 +96,19 @@ public class BouncingBall extends JFrame implements MouseListener {
         yCord[2]=-400;
         yCord[3]=-500;
         prizeY=-450;
-        angryY=-450;
+        angryY=-400;
 
 
 
         while (true) {
             try {
-                Thread.sleep(50);
+                Thread.sleep(30);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+             if(score<100)
+            try {
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -120,17 +124,15 @@ public class BouncingBall extends JFrame implements MouseListener {
 
            if (prizeY == -150)
                 prizeX = 40 + disc.nextInt(700);
-
-
-
-         // if (prizeY > 800)               prizeY = 0;
-
-            prizeY += 10;
+           if(angryX == -150)
+               angryX = 40+disc.nextInt(700);
+           prizeY += 10;
            bY += 10;
            angryY+=10;
 
             graphics.clearRect(0, 0, 800, 800);
-           // graphics.drawImage(background,0,0,null);
+            if(score>100)
+            graphics.drawImage(background,0,0,null);
 
 
 
@@ -191,7 +193,7 @@ public class BouncingBall extends JFrame implements MouseListener {
                 }
 
                 if(yCord[3]>850){
-                    yCord[3]=-350;
+                    yCord[3]=-300;
                 }
                 graphics.drawImage(im1, xCord[3], yCord[3], null);
 
@@ -225,16 +227,12 @@ public class BouncingBall extends JFrame implements MouseListener {
                 }
 
                 if(angryY>850){
-                    angryY=-100;
+                    angryY=-250;
                 }
                 graphics.drawImage(angry, angryX, angryY, null);
             }
 
 
-
-
-            if(score>100)
-              im1=blue;
 
 
             yCord[3] += yVel;
@@ -250,6 +248,14 @@ public class BouncingBall extends JFrame implements MouseListener {
                 if(score%7==0)
                 graphics.drawImage(imgP, prizeX, prizeY, null);
             }
+
+
+            if(score>100)
+                im1=blue;
+            if(score>1000)
+                blue=green;
+
+
             prizeY += yVel;
 
             if (bY > 800 )
@@ -260,16 +266,6 @@ public class BouncingBall extends JFrame implements MouseListener {
 
             graphics.drawImage(imgB,bX,bY,null);
 
-
-          //  if (score % 5 == 0) {
-
-           ///}
-//            if (score % 3 == 0)
-//
-//                if (prizeY > 700 || b == 1) {
-//                    b = 1;
-//                    graphics.drawImage(imgB, 350, bY, null);
-//                }
 
 
         }
@@ -293,37 +289,30 @@ public class BouncingBall extends JFrame implements MouseListener {
             if ((locX >= xCord[0] &&locX <= xCord[0] + 150) && (locY >= yCord[0] && locY <= yCord[0] + 150)) {
 
                 hiddenballoon[0] = true;
-              //  System.out.println("score="score);
                 score+=10;
 
             }
-        if ((locX >= xCord[1] && locX <=xCord[1] + 150) && (locY >=yCord[1] && locY <= yCord[1] + 150)) {
+           if ((locX >= xCord[1] && locX <=xCord[1] + 150) && (locY >=yCord[1] && locY <= yCord[1] + 150)) {
 
             hiddenballoon[1] = true;
-           // System.out.println("score="score);
+
             score+=10;
 
 
-            //g.setColor(Color.white);
-            // graphics.fillOval(xCord[i], yCord[i], 200, 200);
         }
-        if ((locX >= xCord[2] && locX <=xCord[2] + 150) && (locY >= yCord[2] && locY <= yCord[2] + 150)) {
+           if ((locX >= xCord[2] && locX <=xCord[2] + 150) && (locY >= yCord[2] && locY <= yCord[2] + 150)) {
 
             hiddenballoon[2] = true;
-          // System.out.println("score="score);
+
            score+=10;
-            //  System.out.println("hellok\n");
-            //g.setColor(Color.white);
-            // graphics.fillOval(xCord[i], yCord[i], 200, 200);
+
         }
-        if ((locX >=xCord[3] && locX <=xCord[3] + 150) && (locY>= yCord[3] && locY <= yCord[3] + 150)) {
+          if ((locX >=xCord[3] && locX <=xCord[3] + 150) && (locY>= yCord[3] && locY <= yCord[3] + 150)) {
 
             hiddenballoon[3] = true;
-           //System.out.println("score="score);
+
             score+=10;
-            //  System.out.println("hellok\n");
-            //g.setColor(Color.white);
-            // graphics.fillOval(xCord[i], yCord[i], 200, 200);
+
         }
 
         if ((locX>=bX && locX<=bX+150) && (locY>=bY && locY<=bY+150)){
@@ -340,7 +329,6 @@ public class BouncingBall extends JFrame implements MouseListener {
         if ((locX >= angryX &&locX <= angryX + 150) && (locY >= angryY && locY <= angryY + 150)) {
 
             hiddenangry = true;
-            //  System.out.println("score="score);
             score-=5;
 
         }
